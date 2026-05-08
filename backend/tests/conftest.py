@@ -5,8 +5,8 @@ from sqlalchemy.orm import sessionmaker
 
 from app.db.base import Base
 from app.db.deps import get_db
-from app.main import app
 import app.models.persona  # noqa: F401 — registers Persona table with Base metadata
+from app.main import app  # must come after model import to keep 'app' as FastAPI instance
 
 TEST_DATABASE_URL = "sqlite:///:memory:"
 
