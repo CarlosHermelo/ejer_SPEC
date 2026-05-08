@@ -32,12 +32,12 @@ jobs:
 
       - name: Run Alembic migrations
         env:
-          DATABASE_URL: sqlite:///:memory:
+          DATABASE_URL: "sqlite:///:memory:"
         run: alembic upgrade head
 
       - name: Run tests
         env:
-          DATABASE_URL: sqlite:///:memory:
+          DATABASE_URL: "sqlite:///:memory:"
           APP_ENV: test
         run: pytest tests/ -v
 
