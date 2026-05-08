@@ -4,7 +4,29 @@ Aplicacion interna para cargar y consultar personas que trabajan con el usuario 
 
 ## Estado
 
-Proyecto en etapa inicial con Spec-Driven Development.
+MVP implementado con Spec-Driven Development.
+
+## Alcance del MVP
+
+La aplicacion permite:
+
+- cargar personas con nombre, apellido y fecha de alta
+- consultar personas cargadas
+- persistir datos en SQLite
+- ejecutar backend y frontend con Docker Compose
+
+Fuera del MVP:
+
+- login de usuarios
+- permisos por rol
+- pagos
+- tareas
+- documentos
+- busqueda
+- filtros
+- paginacion
+- edicion
+- borrado
 
 ## Estructura
 
@@ -130,3 +152,55 @@ Validar configuracion:
 ```bash
 docker compose config
 ```
+
+## API
+
+Backend local por defecto:
+
+```text
+http://localhost:8000
+```
+
+Endpoints disponibles:
+
+| Metodo | Ruta | Descripcion |
+|---|---|---|
+| GET | `/health` | Healthcheck del backend |
+| POST | `/personas` | Crea una persona |
+| GET | `/personas` | Lista personas cargadas |
+
+Payload de `POST /personas`:
+
+```json
+{
+  "nombre": "Ada",
+  "apellido": "Lovelace",
+  "fecha_alta": "2026-05-07"
+}
+```
+
+Reglas:
+
+- `nombre` es obligatorio
+- `apellido` es obligatorio
+- `fecha_alta` es obligatoria
+- `fecha_alta` no puede ser futura
+
+## Observability
+
+El backend incluye instrumentacion base con OpenTelemetry para FastAPI.
+
+Variables:
+
+- `OTEL_SERVICE_NAME`
+- `OTEL_TRACES_EXPORTER`
+
+En el MVP `OTEL_TRACES_EXPORTER=none`. La exportacion a un collector externo queda fuera del MVP.
+
+## Validacion manual
+
+1. Levantar servicios con `docker compose up --build`.
+2. Abrir el frontend en `http://localhost:5173`.
+3. Cargar una persona con nombre, apellido y fecha de alta.
+4. Verificar que aparece en el listado.
+5. Probar campos vacios y fecha futura.
