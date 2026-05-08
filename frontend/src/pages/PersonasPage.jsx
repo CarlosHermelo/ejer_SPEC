@@ -1,9 +1,36 @@
-import ErrorState from "../components/ErrorState.jsx";
+import { useCallback, useEffect, useState } from "react";
+
 import PersonaForm from "../components/PersonaForm.jsx";
 import PersonasList from "../components/PersonasList.jsx";
+import { createPersona, listPersonas } from "../api/personas.js";
 
 function PersonasPage() {
-  const error = null;
+  const [personas, setPersonas] = useState([]);
+  const [loadingList, setLoadingList] = useState(true);
+  const [listError, setListError] = useState(null);
+
+  const loadPersonas = useCallback(async () => {
+    setLoadingList(true);
+    setListError(null);
+
+    try {
+      const data = await listPersonas();
+      setPersonas(data);
+    } catch (error) {
+      setListError(error.message);
+    } finally {
+      setLoadingList(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadPersonas();
+  }, [loadPersonas]);
+
+  async function handleCreatePersona(payload) {
+    await createPersona(payload);
+    await loadPersonas();
+  }
 
   return (
     <main className="people-page">
@@ -21,7 +48,7 @@ function PersonasPage() {
             <h2 id="form-title">Carga</h2>
             <p>Campos definidos para el MVP.</p>
           </div>
-          <PersonaForm />
+          <PersonaForm onCreatePersona={handleCreatePersona} />
         </section>
 
         <section className="tool-panel" aria-labelledby="list-title">
@@ -29,11 +56,7 @@ function PersonasPage() {
             <h2 id="list-title">Consulta</h2>
             <p>Listado base preparado para datos persistidos.</p>
           </div>
-          {error ? (
-            <ErrorState title="No se pudo cargar el listado" message={error} />
-          ) : (
-            <PersonasList />
-          )}
+          <PersonasList personas={personas} loading={loadingList} error={listError} />
         </section>
       </section>
     </main>

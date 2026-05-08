@@ -121,6 +121,17 @@ input:focus {
   border-color: #3478c6;
 }
 
+input[aria-invalid="true"] {
+  border-color: #b42318;
+}
+
+.field-error {
+  margin: 0;
+  color: #b42318;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
 .primary-action {
   min-height: 42px;
   border: 0;
@@ -135,6 +146,23 @@ input:focus {
   color: #6b7886;
   background: #d8dee6;
   cursor: not-allowed;
+}
+
+.form-message {
+  margin: 0;
+  padding: 12px;
+  border-radius: 6px;
+  line-height: 1.5;
+}
+
+.form-message-success {
+  color: #185b35;
+  background: #e8f5ee;
+}
+
+.form-message-error {
+  color: #8f1d18;
+  background: #fff0ee;
 }
 
 .state-box {

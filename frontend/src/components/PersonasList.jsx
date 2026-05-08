@@ -1,8 +1,7 @@
 import EmptyState from "./EmptyState.jsx";
+import ErrorState from "./ErrorState.jsx";
 
-const samplePersonas = [];
-
-function PersonasList({ personas = samplePersonas, loading = false, error = null }) {
+function PersonasList({ personas = [], loading = false, error = null }) {
   if (loading) {
     return (
       <div className="state-box" role="status">
@@ -13,7 +12,12 @@ function PersonasList({ personas = samplePersonas, loading = false, error = null
   }
 
   if (error) {
-    return error;
+    return (
+      <ErrorState
+        title="No se pudo cargar el listado"
+        message={error}
+      />
+    );
   }
 
   if (personas.length === 0) {
@@ -40,7 +44,7 @@ function PersonasList({ personas = samplePersonas, loading = false, error = null
             <tr key={persona.id}>
               <td>{persona.nombre}</td>
               <td>{persona.apellido}</td>
-              <td>{persona.fechaAlta}</td>
+              <td>{persona.fecha_alta}</td>
             </tr>
           ))}
         </tbody>
