@@ -1,36 +1,18 @@
-import { useCallback, useEffect, useState } from "react";
-
+import BuscadorPersonas from "../components/BuscadorPersonas.jsx";
+import ErrorState from "../components/ErrorState.jsx";
 import PersonaForm from "../components/PersonaForm.jsx";
 import PersonasList from "../components/PersonasList.jsx";
-import { createPersona, listPersonas } from "../api/personas.js";
+
+const PERSONAS_EJEMPLO = [
+  { id: 1, nombre: "María", apellido: "Gómez", fecha_alta: "2024-01-10" },
+  { id: 2, nombre: "Marcos", apellido: "López", fecha_alta: "2024-02-15" },
+  { id: 3, nombre: "Juan", apellido: "Pérez", fecha_alta: "2024-03-20" },
+  { id: 4, nombre: "Mariana", apellido: "Fernández", fecha_alta: "2024-04-05" },
+  { id: 5, nombre: "Carlos", apellido: "Martínez", fecha_alta: "2024-05-18" },
+];
 
 function PersonasPage() {
-  const [personas, setPersonas] = useState([]);
-  const [loadingList, setLoadingList] = useState(true);
-  const [listError, setListError] = useState(null);
-
-  const loadPersonas = useCallback(async () => {
-    setLoadingList(true);
-    setListError(null);
-
-    try {
-      const data = await listPersonas();
-      setPersonas(data);
-    } catch (error) {
-      setListError(error.message);
-    } finally {
-      setLoadingList(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadPersonas();
-  }, [loadPersonas]);
-
-  async function handleCreatePersona(payload) {
-    await createPersona(payload);
-    await loadPersonas();
-  }
+  const error = null;
 
   return (
     <main className="people-page">
@@ -48,7 +30,7 @@ function PersonasPage() {
             <h2 id="form-title">Carga</h2>
             <p>Campos definidos para el MVP.</p>
           </div>
-          <PersonaForm onCreatePersona={handleCreatePersona} />
+          <PersonaForm />
         </section>
 
         <section className="tool-panel" aria-labelledby="list-title">
@@ -56,8 +38,20 @@ function PersonasPage() {
             <h2 id="list-title">Consulta</h2>
             <p>Listado base preparado para datos persistidos.</p>
           </div>
-          <PersonasList personas={personas} loading={loadingList} error={listError} />
+          {error ? (
+            <ErrorState title="No se pudo cargar el listado" message={error} />
+          ) : (
+            <PersonasList />
+          )}
         </section>
+      </section>
+
+      <section className="tool-panel" style={{ marginTop: 20 }} aria-labelledby="busqueda-title">
+        <div className="section-heading">
+          <h2 id="busqueda-title">Búsqueda de clientes</h2>
+          <p>Ingresá al menos 3 caracteres del nombre y presá Buscar.</p>
+        </div>
+        <BuscadorPersonas personas={PERSONAS_EJEMPLO} />
       </section>
     </main>
   );
