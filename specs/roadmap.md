@@ -1,4 +1,4 @@
-# Roadmap
+﻿# Roadmap
 
 ## Fases
 
@@ -43,3 +43,7 @@ Implementar la consulta/listado de personas cargadas.
 ### Feature 6 - MVP
 
 Validar el flujo completo, documentar uso y cerrar el MVP.
+
+### Feature 7 - Envio de mensajes a WhatsApp
+
+Script Python standalone que envia un mensaje de texto al numero personal del usuario via Kapso (wrapper de Meta WhatsApp Cloud API), ejecutable desde linea de comandos. Fuera del scope: recepcion, grabacion en markdown, integracion con frontend.
