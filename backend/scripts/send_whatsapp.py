@@ -9,7 +9,7 @@ load_dotenv()
 
 def main():
     if len(sys.argv) < 2 or not sys.argv[1].strip():
-        print("Error: debés pasar el texto del mensaje como argumento.", file=sys.stderr)
+        print("Error: debes pasar el texto del mensaje como argumento.", file=sys.stderr)
         print("Uso: python send_whatsapp.py \"tu mensaje\"", file=sys.stderr)
         sys.exit(1)
 
@@ -23,13 +23,14 @@ def main():
         sys.exit(1)
 
     texto = sys.argv[1].strip()
-    url = f"https://app.kapso.ai/api/meta/v1/{phone_number_id}/messages"
+    url = f"https://api.kapso.ai/meta/whatsapp/v24.0/{phone_number_id}/messages"
     headers = {
-        "x-kapso-api-key": api_key,
+        "X-API-Key": api_key,
         "Content-Type": "application/json",
     }
     payload = {
         "messaging_product": "whatsapp",
+        "recipient_type": "individual",
         "to": numero_destino,
         "type": "text",
         "text": {"body": texto},
@@ -43,10 +44,9 @@ def main():
         print(f"Error HTTP {response.status_code}: {response.text}", file=sys.stderr)
         sys.exit(1)
     except requests.RequestException as e:
-        print(f"Error de conexión: {e}", file=sys.stderr)
+        print(f"Error de conexion: {e}", file=sys.stderr)
         sys.exit(1)
 
 
 if __name__ == "__main__":
     main()
-
