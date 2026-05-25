@@ -109,7 +109,9 @@ El frontend debe separar:
 
 - API HTTP provista por FastAPI para que el frontend gestione personas.
 - Instrumentacion con OpenTelemetry.
-- **Kapso** como plataforma de WhatsApp (wrapper de Meta WhatsApp Cloud API). SDK via requests HTTP directo a la API de Kapso. Sin librerias adicionales de WhatsApp.
+- **Kapso** como plataforma de WhatsApp (wrapper de Meta WhatsApp Cloud API). Dos opciones de integracion disponibles:
+  - **Kapso CLI** (@kapso/cli): herramienta de linea de comandos para enviar mensajes, gestionar webhooks e inspeccionar conversaciones. Instalacion: `npm install -g @kapso/cli`. Requiere Node.js >= 20.19. Autenticacion via `KAPSO_API_KEY`.
+  - **HTTP directo**: requests Python a la API REST de Kapso. Usado en scripts standalone del backend.
 - Variables de entorno requeridas para Kapso (entorno sandbox):
   - KAPSO_API_KEY — clave de autenticacion de la API de Kapso
   - PHONE_NUMBER_ID — ID del numero de telefono registrado en Kapso/Meta
@@ -126,6 +128,7 @@ Entidad `persona`:
 - `nombre`
 - `apellido`
 - `fecha_alta`
+
 
 
 
