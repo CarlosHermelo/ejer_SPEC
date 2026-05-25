@@ -115,6 +115,7 @@ El frontend debe separar:
   - PHONE_NUMBER_ID — ID del numero de telefono registrado en Kapso/Meta
   - NUMERO_DESTINO — numero de WhatsApp destino verificado en sandbox (formato internacional sin +)
 - Los valores de estas variables NO se versionan en el repo; se almacenan en .env local (incluido en .gitignore). El archivo .env.example documenta las claves sin valores.
+- Autenticacion: header `x-kapso-api-key: {KAPSO_API_KEY}`. No usar `Authorization: Bearer`.
 
 ## Schema inicial
 
@@ -124,6 +125,7 @@ Entidad `persona`:
 - `nombre`
 - `apellido`
 - `fecha_alta`
+
 
 
 
