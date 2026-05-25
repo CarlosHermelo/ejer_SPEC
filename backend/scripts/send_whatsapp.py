@@ -25,7 +25,7 @@ def main():
     texto = sys.argv[1].strip()
     url = f"https://app.kapso.ai/api/meta/v1/{phone_number_id}/messages"
     headers = {
-        "Authorization": f"Bearer {api_key}",
+        "x-kapso-api-key": api_key,
         "Content-Type": "application/json",
     }
     payload = {
@@ -49,3 +49,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
