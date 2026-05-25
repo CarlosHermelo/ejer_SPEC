@@ -97,6 +97,14 @@ El frontend debe separar:
 - No usar Next.js en el MVP; React + Vite es suficiente.
 - No hacer push, PR ni merge sin validacion previa.
 
+
+## Variables de entorno y configuracion local
+
+- Todo el proyecto usa python-dotenv para cargar variables desde .env automaticamente al iniciar cualquier script o modulo Python.
+- El archivo .env nunca se versiona (incluido en .gitignore). El archivo .env.example documenta todas las claves con valores de referencia.
+- Cualquier script Python standalone debe incluir al inicio: rom dotenv import load_dotenv; load_dotenv().
+- FastAPI tambien carga .env via pydantic-settings con env_file = ".env".
+- Este patron aplica a todo nuevo script o modulo que consuma variables de entorno, sin excepcion.
 ## APIs e integraciones
 
 - API HTTP provista por FastAPI para que el frontend gestione personas.
@@ -116,5 +124,6 @@ Entidad `persona`:
 - `nombre`
 - `apellido`
 - `fecha_alta`
+
 
 

@@ -15,6 +15,7 @@ Crear un script Python standalone que envíe un mensaje de texto a WhatsApp usan
 ### Grupo 1 — Dependencia
 
 1. Agregar `requests` a `backend/requirements.txt` (si no existe).
+2. Agregar `python-dotenv` a `backend/requirements.txt` (si no existe).
 
 ### Grupo 2 — Variables de entorno
 
@@ -27,6 +28,7 @@ Crear un script Python standalone que envíe un mensaje de texto a WhatsApp usan
 
 1. Crear `backend/scripts/__init__.py` vacío si la carpeta no existe.
 2. Crear `backend/scripts/send_whatsapp.py` con:
+   - Llamar `load_dotenv()` al inicio para cargar el `.env` automaticamente.
    - Lectura de `KAPSO_API_KEY`, `PHONE_NUMBER_ID` y `NUMERO_DESTINO` desde variables de entorno.
    - Validación de que el argumento de texto fue pasado; si no, error y exit(1).
    - Construcción del payload JSON para la API de Kapso.
@@ -46,3 +48,4 @@ Crear un script Python standalone que envíe un mensaje de texto a WhatsApp usan
 - No hardcodear credenciales.
 - No implementar recepción de mensajes.
 - No agregar lógica de reintentos ni colas.
+

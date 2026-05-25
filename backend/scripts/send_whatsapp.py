@@ -1,6 +1,10 @@
 ﻿import os
 import sys
+
+from dotenv import load_dotenv
 import requests
+
+load_dotenv()
 
 
 def main():
@@ -13,7 +17,7 @@ def main():
     phone_number_id = os.environ.get("PHONE_NUMBER_ID")
     numero_destino = os.environ.get("NUMERO_DESTINO")
 
-    missing = [v for v, k in [("KAPSO_API_KEY", api_key), ("PHONE_NUMBER_ID", phone_number_id), ("NUMERO_DESTINO", numero_destino)] if k is None]
+    missing = [name for name, val in [("KAPSO_API_KEY", api_key), ("PHONE_NUMBER_ID", phone_number_id), ("NUMERO_DESTINO", numero_destino)] if val is None]
     if missing:
         print(f"Error: variables de entorno faltantes: {', '.join(missing)}", file=sys.stderr)
         sys.exit(1)
@@ -35,7 +39,7 @@ def main():
         response = requests.post(url, json=payload, headers=headers, timeout=10)
         response.raise_for_status()
         print(f"Mensaje enviado: \"{texto}\"")
-    except requests.HTTPError as e:
+    except requests.HTTPError:
         print(f"Error HTTP {response.status_code}: {response.text}", file=sys.stderr)
         sys.exit(1)
     except requests.RequestException as e:
