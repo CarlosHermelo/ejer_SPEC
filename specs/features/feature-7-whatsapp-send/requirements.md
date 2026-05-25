@@ -3,7 +3,8 @@
 ## Qué debe hacer
 
 - Proveer un script Python en el backend que acepte un texto por argumento de línea de comandos y lo envíe como mensaje de WhatsApp al número personal del usuario.
-- La integración debe usar **Kapso**, wrapper de Meta WhatsApp Cloud API.
+- La integración usa **Kapso** como plataforma de WhatsApp (Meta WhatsApp Cloud API).
+- El SDK de Kapso se consume via requests HTTP directo, sin librerías adicionales de WhatsApp.
 - El script debe poder ejecutarse directamente con `python send_whatsapp.py "texto del mensaje"`.
 
 ## Reglas de negocio
@@ -25,6 +26,6 @@
 
 ## Decisiones tomadas
 
-- Se usa Kapso como librería de integración con Meta WhatsApp Cloud API.
-- Por ahora el script es standalone en `backend/scripts/send_whatsapp.py`.
+- Se usa Kapso como plataforma de WhatsApp; el acceso es via HTTP directo (librería `requests`), sin SDK propio de Kapso instalado como paquete.
+- El script es standalone en `backend/scripts/send_whatsapp.py`.
 - Credenciales vía variables de entorno: `KAPSO_API_KEY`, `KAPSO_PHONE_NUMBER_ID`, `WHATSAPP_DEST_NUMBER`.

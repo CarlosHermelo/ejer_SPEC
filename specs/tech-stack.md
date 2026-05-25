@@ -1,4 +1,4 @@
-# Tech Stack
+﻿# Tech Stack
 
 ## Frontend
 
@@ -101,7 +101,7 @@ El frontend debe separar:
 
 - API HTTP provista por FastAPI para que el frontend gestione personas.
 - Instrumentacion con OpenTelemetry.
-- No se definieron integraciones externas adicionales.
+- **Kapso** como plataforma de WhatsApp (wrapper de Meta WhatsApp Cloud API). SDK via requests HTTP directo a la API de Kapso. Sin librerias adicionales de WhatsApp.
 
 ## Schema inicial
 
@@ -111,3 +111,4 @@ Entidad `persona`:
 - `nombre`
 - `apellido`
 - `fecha_alta`
+

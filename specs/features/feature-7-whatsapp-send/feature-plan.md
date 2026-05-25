@@ -2,19 +2,19 @@
 
 ## Objetivo
 
-Crear un script Python standalone que envíe un mensaje de texto a WhatsApp usando Kapso (wrapper de Meta WhatsApp Cloud API), ejecutable desde línea de comandos.
+Crear un script Python standalone que envíe un mensaje de texto a WhatsApp usando la API de Kapso via HTTP directo (librería `requests`), ejecutable desde línea de comandos.
 
 ## Archivos a tocar
 
 - `backend/scripts/send_whatsapp.py` — script principal (nuevo)
-- `backend/requirements.txt` — agregar dependencia `kapso`
+- `backend/requirements.txt` — agregar dependencia `requests`
 - `.env.example` — documentar las variables de entorno necesarias
 
 ## Grupos de tareas
 
 ### Grupo 1 — Dependencia
 
-1. Agregar `kapso` a `backend/requirements.txt`.
+1. Agregar `requests` a `backend/requirements.txt` (si no existe).
 
 ### Grupo 2 — Variables de entorno
 
@@ -29,17 +29,18 @@ Crear un script Python standalone que envíe un mensaje de texto a WhatsApp usan
 2. Crear `backend/scripts/send_whatsapp.py` con:
    - Lectura de credenciales desde variables de entorno.
    - Validación de que el argumento de texto fue pasado; si no, error y exit(1).
-   - Inicialización del cliente Kapso con las credenciales.
-   - Envío del mensaje de texto al número destino.
-   - Print de confirmación en éxito, print de error y exit(1) en falla.
+   - Construcción del payload JSON para la API de Kapso.
+   - Envío via `requests.post` al endpoint de Kapso con los headers de autenticación.
+   - Print de confirmación en éxito, print del error HTTP y exit(1) en falla.
 
 ## Dependencias entre grupos
 
 - Grupo 1 y Grupo 2 son independientes entre sí.
-- Grupo 3 depende de Grupo 1 (la librería debe estar declarada) y Grupo 2 (las variables deben estar documentadas).
+- Grupo 3 depende de Grupo 1 y Grupo 2.
 
 ## Qué NO hacer
 
+- No instalar ni importar librerías SDK propias de Kapso o WhatsApp.
 - No crear endpoint HTTP en FastAPI.
 - No modificar el frontend.
 - No hardcodear credenciales.
