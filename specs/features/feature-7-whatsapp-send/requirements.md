@@ -37,5 +37,7 @@ Los valores se almacenan en `.env` local (gitignored). El `.env.example` documen
 ## Decisiones tomadas
 
 - Kapso como plataforma; acceso via HTTP directo con `requests`, sin SDK propio de Kapso instalado como paquete.
+- Endpoint de envio: `https://app.kapso.ai/api/meta/v1/{PHONE_NUMBER_ID}/messages`
 - El script es standalone en `backend/scripts/send_whatsapp.py`.
 - Nombres de variables de entorno: `KAPSO_API_KEY`, `PHONE_NUMBER_ID`, `NUMERO_DESTINO`.
+
