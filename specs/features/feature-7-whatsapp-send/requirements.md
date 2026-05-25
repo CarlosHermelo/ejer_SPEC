@@ -11,9 +11,19 @@
 
 - El texto del mensaje es obligatorio; si no se pasa, el script debe mostrar un error claro y salir con código distinto de 0.
 - El número destino es el número personal verificado del usuario en el sandbox de Kapso.
-- Las credenciales (API key, Phone Number ID, número destino) deben leerse desde variables de entorno, no hardcodeadas en el código.
+- Las credenciales deben leerse desde variables de entorno, no hardcodeadas en el código.
 - Si el envío falla, el script debe imprimir el error y salir con código de error.
 - Si el envío es exitoso, el script debe imprimir una confirmación con el mensaje enviado.
+
+## Variables de entorno
+
+| Variable | Descripción |
+|----------|-------------|
+| `KAPSO_API_KEY` | Clave de autenticación de la API de Kapso |
+| `PHONE_NUMBER_ID` | ID del número de teléfono registrado en Kapso/Meta |
+| `NUMERO_DESTINO` | Número WhatsApp destino verificado en sandbox (formato internacional sin +) |
+
+Los valores se almacenan en `.env` local (gitignored). El `.env.example` documenta las claves sin valores.
 
 ## Fuera del scope
 
@@ -26,6 +36,6 @@
 
 ## Decisiones tomadas
 
-- Se usa Kapso como plataforma de WhatsApp; el acceso es via HTTP directo (librería `requests`), sin SDK propio de Kapso instalado como paquete.
+- Kapso como plataforma; acceso via HTTP directo con `requests`, sin SDK propio de Kapso instalado como paquete.
 - El script es standalone en `backend/scripts/send_whatsapp.py`.
-- Credenciales vía variables de entorno: `KAPSO_API_KEY`, `KAPSO_PHONE_NUMBER_ID`, `WHATSAPP_DEST_NUMBER`.
+- Nombres de variables de entorno: `KAPSO_API_KEY`, `PHONE_NUMBER_ID`, `NUMERO_DESTINO`.
