@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat > *)",
+      "Bash(python3 -)",
+      "Bash(git commit -m ' *)"
+    ],
+    "defaultMode": "bypassPermissions",
+    "additionalDirectories": [
+      "C:\\Users\\u14527001\\Downloads\\analista\\eje3_codex"
+    ]
+  }
+}

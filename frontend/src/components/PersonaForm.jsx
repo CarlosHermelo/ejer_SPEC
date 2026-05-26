@@ -1,27 +1,5 @@
 import { useState } from "react";
 
-<<<<<<< HEAD
-function PersonaForm() {
-  const [fields, setFields] = useState({ nombre: "", apellido: "", fecha_alta: "" });
-  const [submitted, setSubmitted] = useState(false);
-
-  const isComplete = fields.nombre.trim() && fields.apellido.trim() && fields.fecha_alta;
-
-  function handleChange(e) {
-    setFields((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }
-
-  function handleGuardar() {
-    setSubmitted(true);
-  }
-
-  if (submitted) {
-    return (
-      <div className="thank-you-message" role="status" aria-live="polite">
-        <p>¡Gracias! El cliente fue dado de alta correctamente.</p>
-      </div>
-    );
-=======
 const initialForm = {
   nombre: "",
   apellido: "",
@@ -92,7 +70,6 @@ function PersonaForm({ onCreatePersona }) {
       setStatus("error");
       setMessage(error.message);
     }
->>>>>>> origin/main
   }
 
   return (
@@ -104,18 +81,12 @@ function PersonaForm({ onCreatePersona }) {
           name="nombre"
           type="text"
           placeholder="Nombre"
-<<<<<<< HEAD
-          value={fields.nombre}
-          onChange={handleChange}
-        />
-=======
           value={values.nombre}
           onChange={handleChange}
           aria-invalid={Boolean(errors.nombre)}
           aria-describedby={errors.nombre ? "nombre-error" : undefined}
         />
         {errors.nombre ? <p className="field-error" id="nombre-error">{errors.nombre}</p> : null}
->>>>>>> origin/main
       </div>
 
       <div className="field-group">
@@ -125,18 +96,12 @@ function PersonaForm({ onCreatePersona }) {
           name="apellido"
           type="text"
           placeholder="Apellido"
-<<<<<<< HEAD
-          value={fields.apellido}
-          onChange={handleChange}
-        />
-=======
           value={values.apellido}
           onChange={handleChange}
           aria-invalid={Boolean(errors.apellido)}
           aria-describedby={errors.apellido ? "apellido-error" : undefined}
         />
         {errors.apellido ? <p className="field-error" id="apellido-error">{errors.apellido}</p> : null}
->>>>>>> origin/main
       </div>
 
       <div className="field-group">
@@ -145,20 +110,6 @@ function PersonaForm({ onCreatePersona }) {
           id="fecha_alta"
           name="fecha_alta"
           type="date"
-<<<<<<< HEAD
-          value={fields.fecha_alta}
-          onChange={handleChange}
-        />
-      </div>
-
-      <button
-        className="primary-action"
-        type="button"
-        disabled={!isComplete}
-        onClick={handleGuardar}
-      >
-        Guardar
-=======
           value={values.fecha_alta}
           onChange={handleChange}
           aria-invalid={Boolean(errors.fecha_alta)}
@@ -171,7 +122,6 @@ function PersonaForm({ onCreatePersona }) {
 
       <button className="primary-action" type="submit" disabled={isLoading}>
         {isLoading ? "Guardando" : "Guardar"}
->>>>>>> origin/main
       </button>
 
       {message ? (
