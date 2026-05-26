@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from app.api.personas import router as personas_router
 from app.core.config import get_settings
 from app.observability.setup import configure_observability
 
@@ -7,6 +8,7 @@ settings = get_settings()
 
 app = FastAPI(title="Gestion de personas", version="0.1.0")
 configure_observability(app)
+app.include_router(personas_router)
 
 
 @app.get("/health", tags=["system"])
