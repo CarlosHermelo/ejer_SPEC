@@ -47,3 +47,10 @@ Validar el flujo completo, documentar uso y cerrar el MVP.
 ### Feature 7 - Envio de mensajes a WhatsApp
 
 Script Python standalone que envia un mensaje de texto al numero personal del usuario via Kapso (wrapper de Meta WhatsApp Cloud API), ejecutable desde linea de comandos. Fuera del scope: recepcion, grabacion en markdown, integracion con frontend.
+
+### Feature 8 - Deploy Frontend en Vercel ✅
+
+Conectar el frontend React + Vite a Vercel para tener una URL publica de produccion.
+Completada: 2026-05-26.
+URL resultante: `https://ejer-spec.vercel.app`
+Pendiente: deploy del backend FastAPI (Railway o Render) y configurar `VITE_API_BASE_URL` en Vercel.

@@ -24,7 +24,42 @@
 
 - OpenTelemetry
 
-## Entorno y ejecucion
+## Deploy y hosting
+
+### Frontend — Vercel
+
+- **Plataforma:** Vercel (plan Hobby)
+- **URL de produccion:** `https://ejer-spec.vercel.app`
+- **Proyecto Vercel:** `ejer-spec` (cuenta `carloshermelo-gmailcoms-projects`)
+- **Repo conectado:** `CarlosHermelo/ejer_SPEC` rama `main`
+- **Root Directory configurado en Vercel:** `frontend/`
+- **Framework:** Vite (configurado manualmente, no Create React App)
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
+- **Node.js:** >= 22 (requerido por Vite 7, especificado en `engines` de `package.json`)
+- **Deploy automatico:** cada push a `main` dispara un nuevo deploy en Vercel
+- **SPA Routing:** configurado via `frontend/vercel.json` con rewrites a `index.html`
+- **Variable de entorno requerida en Vercel:**
+  - `VITE_API_BASE_URL`: URL del backend FastAPI desplegado
+
+### Archivo frontend/vercel.json
+
+```json
+{
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+```
+
+### Backend — pendiente de deploy
+
+El backend FastAPI todavia no tiene plataforma de hosting definida. Opciones evaluadas: Railway, Render. La URL resultante debe configurarse como `VITE_API_BASE_URL` en Vercel.
+
+## Entorno y ejecucion local
 
 - Docker Desktop 4.69.x
 - Docker Engine 29.3.x

@@ -1,3 +1,11 @@
+## Feature 8 - Deploy Frontend en Vercel - Cerrada ✅
+- Fecha: 2026-05-26
+- Que se implemento: conexion del frontend React + Vite a Vercel con deploy automatico desde rama `main`. Configuracion de `vercel.json` con framework Vite, build command, output directory y SPA routing. Especificacion de Node.js >= 22 en `package.json`. Resolucion de conflictos de merge en `PersonaForm.jsx` que bloqueaban el build.
+- Decisiones tomadas fuera de la spec: se eligio Vercel plan Hobby por ser gratuito y soportar Vite nativamente. El preset fue configurado manualmente a Vite (Vercel lo detecto incorrectamente como Create React App).
+- Resultado de validacion: build exitoso en Vercel. URL de produccion activa: `https://ejer-spec.vercel.app`.
+- Archivos modificados: `frontend/vercel.json`, `frontend/package.json`, `frontend/src/components/PersonaForm.jsx`, `specs/tech-stack.md`, `specs/roadmap.md`.
+- Pendiente: deploy del backend FastAPI y configurar `VITE_API_BASE_URL` en Vercel.
+
 ## Feature 6 - MVP - Cerrada
 - Fecha: 2026-05-07
 - Que se implemento: cierre del MVP con documentacion de uso, endpoints disponibles y validacion del flujo completo de carga y consulta de personas.
