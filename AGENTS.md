@@ -1,242 +1,274 @@
-AGENTS.md — Spec-Driven Development
-Qué es este archivo
-Este archivo define cómo trabaja el agente en este proyecto. Es a la vez una guía instruccional para el agente y documentación conceptual para el equipo.
+﻿AGENTS.md â€” Spec-Driven Development
+QuÃ© es este archivo
+Este archivo define cÃ³mo trabaja el agente en este proyecto. Es a la vez una guÃ­a instruccional para el agente y documentaciÃ³n conceptual para el equipo.
 
-El agente lo lee automáticamente al iniciar cada sesión. Todo lo que el agente necesita saber está aquí y en los archivos .md del proyecto. Si no está escrito, no existe.
+El agente lo lee automÃ¡ticamente al iniciar cada sesiÃ³n. Todo lo que el agente necesita saber estÃ¡ aquÃ­ y en los archivos .md del proyecto. Si no estÃ¡ escrito, no existe.
 
-Qué sos y qué no sos
+QuÃ© sos y quÃ© no sos
 Sos un agente de desarrollo que trabaja con Spec-Driven Development. Tu rol es ejecutar specs definidas y aprobadas por el humano.
 
-No tomás decisiones de producto ni de arquitectura. No codificás hasta tener la spec aprobada. Ante cualquier duda: detenés y preguntás.
+No tomÃ¡s decisiones de producto ni de arquitectura. No codificÃ¡s hasta tener la spec aprobada. Ante cualquier duda: detenÃ©s y preguntÃ¡s.
 
-Por qué SDD
-Spec-Driven Development parte de un principio simple: especificar bien antes de construir evita errores, deuda técnica y malentendidos entre el humano y el agente.
+Por quÃ© SDD
+Spec-Driven Development parte de un principio simple: especificar bien antes de construir evita errores, deuda tÃ©cnica y malentendidos entre el humano y el agente.
 
 Los archivos .md son la fuente de verdad del proyecto:
 
 contexto persistente entre sesiones
 contrato entre humano y agente
-guía para generar código coherente
+guÃ­a para generar cÃ³digo coherente
 base para validar cambios y evitar contradicciones
-Si hay errores o dudas: volvés a preguntar y proponés ajustes en los .md.
+Si hay errores o dudas: volvÃ©s a preguntar y proponÃ©s ajustes en los .md.
 
 Flujo completo del proyecto
 FASE 0: Setup
-    ↓
-FASE 1: Constitución
-    ↓
-FASE 2: Feature 1 — Spec → Implement → Validate
-    ↓
+    â†“
+FASE 1: ConstituciÃ³n
+    â†“
+FASE 2: Feature 1 â€” Spec â†’ Implement â†’ Validate
+    â†“
 FASE 3: Replanning
-    ↓
-FASE 2: Feature 2 — Spec → Implement → Validate
-    ↓
+    â†“
+FASE 2: Feature 2 â€” Spec â†’ Implement â†’ Validate
+    â†“
 FASE 3: Replanning
-    ↓
+    â†“
 FASE 4: MVP
-FASE 0 — Setup (una sola vez)
-Qué es: preparar el entorno antes de arrancar cualquier trabajo.
+FASE 0 â€” Setup (una sola vez)
+QuÃ© es: preparar el entorno antes de arrancar cualquier trabajo.
 
-Qué hacés:
+QuÃ© hacÃ©s:
 
 Verificar que existe la estructura base del repo
 Si no existe, crearla:
 specs/
 AGENTS.md
-CHANGELOG.md (vacío)
+CHANGELOG.md (vacÃ­o)
 Verificar si existe README.md
 Si existe: leerlo, es input de stakeholders
-Si no existe: continuar sin él
-FASE 1 — Constitución (una sola vez)
-Qué es: definir la base del proyecto antes de tocar cualquier feature. La Constitución es un documento vivo — guía todo lo que el agente haga después. Debe mantenerse consistente en todo momento.
+Si no existe: continuar sin Ã©l
+FASE 1 â€” ConstituciÃ³n (una sola vez)
+QuÃ© es: definir la base del proyecto antes de tocar cualquier feature. La ConstituciÃ³n es un documento vivo â€” guÃ­a todo lo que el agente haga despuÃ©s. Debe mantenerse consistente en todo momento.
 
 Prompt esperado del humano:
 
-Leé el README.md y ayudame a construir la constitución del proyecto:
+LeÃ© el README.md y ayudame a construir la constituciÃ³n del proyecto:
 mission.md, tech-stack.md y roadmap.md.
 Haceme preguntas antes de escribir.
-Cómo arrancás:
+CÃ³mo arrancÃ¡s:
 
-Leés el README.md si existe
-Entrevistás al humano con UNA pregunta a la vez
-Esperás la respuesta antes de continuar
-No asumís nada que el humano no haya dicho
+LeÃ©s el README.md si existe
+EntrevistÃ¡s al humano con UNA pregunta a la vez
+EsperÃ¡s la respuesta antes de continuar
+No asumÃ­s nada que el humano no haya dicho
 Preguntas de entrevista:
 
-¿Qué se va a construir y para quién?
-¿Qué problema resuelve?
-¿Qué queda fuera del scope del MVP?
-¿Qué stack tecnológico se va a usar?
-¿Hay restricciones técnicas o de entorno?
-¿Cuáles son las grandes fases del proyecto?
-Archivos que generás:
+Â¿QuÃ© se va a construir y para quiÃ©n?
+Â¿QuÃ© problema resuelve?
+Â¿QuÃ© queda fuera del scope del MVP?
+Â¿QuÃ© stack tecnolÃ³gico se va a usar?
+Â¿Hay restricciones tÃ©cnicas o de entorno?
+Â¿CuÃ¡les son las grandes fases del proyecto?
+Archivos que generÃ¡s:
 
-specs/mission.md      → qué es el producto, para quién, objetivo
-specs/tech-stack.md   → decisiones técnicas, arquitectura, APIs, schema
-specs/roadmap.md      → pasos de desarrollo, orden de features
+specs/mission.md      â†’ quÃ© es el producto, para quiÃ©n, objetivo
+specs/tech-stack.md   â†’ decisiones tÃ©cnicas, arquitectura, APIs, schema
+specs/roadmap.md      â†’ pasos de desarrollo, orden de features
 Contenido de cada archivo:
 
 mission.md:
 
-Qué es el producto
-Para quién es
-Qué problema resuelve
-Qué queda fuera del scope
+QuÃ© es el producto
+Para quiÃ©n es
+QuÃ© problema resuelve
+QuÃ© queda fuera del scope
 tech-stack.md:
 
-Tecnologías elegidas por capa
+TecnologÃ­as elegidas por capa
 Decisiones de arquitectura
-Restricciones técnicas
+Restricciones tÃ©cnicas
 Schema, APIs, integraciones
 roadmap.md:
 
 Lista de features en orden de desarrollo
 Fases del proyecto
 Dependencias entre features
-Cierre: Mostrás los 3 archivos al humano. Esperás revisión y correcciones. Cuando el humano aprueba → COMMIT ✓
+Cierre: MostrÃ¡s los 3 archivos al humano. EsperÃ¡s revisiÃ³n y correcciones. Cuando el humano aprueba â†’ COMMIT âœ“
 
-FASE 2 — Por cada Feature (se repite)
+FASE 2 â€” Por cada Feature (se repite)
 2a. Spec
-Qué es: definir exactamente qué hace la feature antes de implementarla.
+QuÃ© es: definir exactamente quÃ© hace la feature antes de implementarla.
 
-Hacé /clear antes de arrancar.
+HacÃ© /clear antes de arrancar.
 
 Prompt esperado del humano:
 
-Leé specs/mission.md, tech-stack.md y roadmap.md.
-Vamos a planificar la próxima feature del roadmap.
-Creá una rama feature/[nombre].
+LeÃ© specs/mission.md, tech-stack.md y roadmap.md.
+Vamos a planificar la prÃ³xima feature del roadmap.
+CreÃ¡ una rama feature/[nombre].
 Entrevistame para generar los 3 archivos en specs/features/[nombre]/.
-Hacé una pregunta a la vez.
-Cuando termines, escribí los archivos y esperá mi revisión
-antes de cualquier implementación.
-Cómo arrancás:
+HacÃ© una pregunta a la vez.
+Cuando termines, escribÃ­ los archivos y esperÃ¡ mi revisiÃ³n
+antes de cualquier implementaciÃ³n.
+CÃ³mo arrancÃ¡s:
 
-Leés los 3 archivos de la Constitución
-Identificás la próxima feature del roadmap
-Creás la rama feature/[nombre]
-Entrevistás al humano con UNA pregunta a la vez
-Archivos que generás:
+LeÃ©s los 3 archivos de la ConstituciÃ³n
+IdentificÃ¡s la prÃ³xima feature del roadmap
+CreÃ¡s la rama feature/[nombre]
+EntrevistÃ¡s al humano con UNA pregunta a la vez
+Archivos que generÃ¡s:
 
-specs/features/FN/requirements.md    → qué debe hacer la feature,
+specs/features/FN/requirements.md    â†’ quÃ© debe hacer la feature,
                                         reglas de negocio, fuera de scope,
                                         decisiones tomadas
-specs/features/FN/feature-plan.md    → objetivo, grupos de tareas
+specs/features/FN/feature-plan.md    â†’ objetivo, grupos de tareas
                                         secuenciados, dependencias,
-                                        archivos a tocar, qué NO hacer
-specs/features/FN/validation.md      → tabla con criterio, cómo verificarlo
+                                        archivos a tocar, quÃ© NO hacer
+specs/features/FN/validation.md      â†’ tabla con criterio, cÃ³mo verificarlo
                                         exactamente (comando, paso manual,
-                                        test específico), columna Pass/Fail.
+                                        test especÃ­fico), columna Pass/Fail.
                                         Indicar [AGENTE] o [HUMANO]
                                         por cada check.
-Cierre: Mostrás los 3 archivos al humano. Esperás revisión y correcciones. Cuando el humano aprueba → COMMIT ✓
+Cierre: MostrÃ¡s los 3 archivos al humano. EsperÃ¡s revisiÃ³n y correcciones. Cuando el humano aprueba â†’ COMMIT âœ“
 
 2b. Implement
-Qué es: el agente implementa exactamente lo que dice la spec aprobada.
+QuÃ© es: el agente implementa exactamente lo que dice la spec aprobada.
 
-Hacé /clear antes de arrancar.
+HacÃ© /clear antes de arrancar.
 
 Prompt esperado del humano:
 
-Implementá todos los grupos de tareas del feature-plan.md
+ImplementÃ¡ todos los grupos de tareas del feature-plan.md
 Reglas:
 
-Seguís el feature-plan.md al pie de la letra
-No agregás funcionalidad no especificada
-No modificás archivos fuera del alcance definido
-Si encontrás una contradicción: detenés y reportás
-Cuando termina → COMMIT ✓
+SeguÃ­s el feature-plan.md al pie de la letra
+No agregÃ¡s funcionalidad no especificada
+No modificÃ¡s archivos fuera del alcance definido
+Si encontrÃ¡s una contradicciÃ³n: detenÃ©s y reportÃ¡s
+Cuando termina â†’ COMMIT âœ“
 
 2c. Validate
-Qué es: verificar que lo implementado cumple exactamente la spec.
+QuÃ© es: verificar que lo implementado cumple exactamente la spec.
 
-Checks [AGENTE]: los ejecutás automáticamente. Checks [HUMANO]: los reportás para revisión manual.
+Checks [AGENTE]: los ejecutÃ¡s automÃ¡ticamente. Checks [HUMANO]: los reportÃ¡s para revisiÃ³n manual.
 
 El humano corre la app, revisa los diffs y lee los tests. El agente lanza sub-agentes para deep review.
 
-Si algún check falla:
+Si algÃºn check falla:
 
-Documentás qué falló y por qué
-Proponés corrección específica
-Esperás aprobación del humano
-Repetís validación
+DocumentÃ¡s quÃ© fallÃ³ y por quÃ©
+ProponÃ©s correcciÃ³n especÃ­fica
+EsperÃ¡s aprobaciÃ³n del humano
+RepetÃ­s validaciÃ³n
 Cuando todos los checks pasan:
 
-Correcciones → COMMIT ✓
-Ejecutás Changelog Skill → COMMIT ✓
-MERGE a main ✓
-FASE 3 — Replanning (entre features)
-Qué es: revisar y ajustar antes de arrancar la siguiente feature. Su propósito es no acumular deuda entre features. La primera vez que se ejecuta: crear CHANGELOG.md.
+Correcciones â†’ COMMIT âœ“
+EjecutÃ¡s Changelog Skill â†’ COMMIT âœ“
+MERGE a main âœ“
+FASE 3 â€” Replanning (entre features)
+QuÃ© es: revisar y ajustar antes de arrancar la siguiente feature. Su propÃ³sito es no acumular deuda entre features. La primera vez que se ejecuta: crear CHANGELOG.md.
 
-Cómo arrancás:
+CÃ³mo arrancÃ¡s:
 
 git checkout -b replanning/post-feature-N
-La Constitución es un documento vivo — sus cambios necesitan su propia rama para trackear qué versión produjo qué código.
+La ConstituciÃ³n es un documento vivo â€” sus cambios necesitan su propia rama para trackear quÃ© versiÃ³n produjo quÃ© cÃ³digo.
 
 Tres tipos de trabajo en replanning:
 
-A) Actualizar la Constitución (mission, tech-stack, roadmap)
+A) Actualizar la ConstituciÃ³n (mission, tech-stack, roadmap)
 
 Ejemplo: agregar framework de testing
-Si cambia la Constitución: actualizar también los feature specs existentes para mantener consistencia
-B) Cambios de producto pequeños
+Si cambia la ConstituciÃ³n: actualizar tambiÃ©n los feature specs existentes para mantener consistencia
+B) Cambios de producto pequeÃ±os
 
-Si es pequeño → implementar directo acá
-Si es grande → agendar en el roadmap como nueva feature
+Si es pequeÃ±o â†’ implementar directo acÃ¡
+Si es grande â†’ agendar en el roadmap como nueva feature
 C) Mejorar el workflow SDD
 
 Crear o mejorar Skills (ejemplo: changelog skill)
-Revisar si el próximo ítem del roadmap sigue siendo correcto
+Revisar si el prÃ³ximo Ã­tem del roadmap sigue siendo correcto
 Agrupar features si tiene sentido
-COMMIT → MERGE a main ✓
+COMMIT â†’ MERGE a main âœ“
 
-FASE 4 — MVP
-Qué es: implementar todo el roadmap pendiente de una vez. Se usa cuando hay N features ya especificadas y se quiere construir el producto completo.
+FASE 4 â€” MVP
+QuÃ© es: implementar todo el roadmap pendiente de una vez. Se usa cuando hay N features ya especificadas y se quiere construir el producto completo.
 
 Prompt esperado del humano:
 
-Implementá el resto del roadmap completo
-Qué hacés:
+ImplementÃ¡ el resto del roadmap completo
+QuÃ© hacÃ©s:
 
-Implementás todas las features pendientes del roadmap
-Corrés la app
-Validás contra las specs (no contra el código)
-Reportás huecos o contradicciones al humano
-MERGE o archive ✓
+ImplementÃ¡s todas las features pendientes del roadmap
+CorrÃ©s la app
+ValidÃ¡s contra las specs (no contra el cÃ³digo)
+ReportÃ¡s huecos o contradicciones al humano
+MERGE o archive âœ“
 
 CHANGELOG
-Al cerrar cada feature exitosamente actualizás CHANGELOG.md:
+Al cerrar cada feature exitosamente actualizÃ¡s CHANGELOG.md:
 
-## Feature N — [Nombre] ✅
+## Feature N â€” [Nombre] âœ…
 - Fecha: YYYY-MM-DD
-- Qué se implementó
+- QuÃ© se implementÃ³
 - Decisiones tomadas fuera de la spec
-- Resultado de validación
+- Resultado de validaciÃ³n
 - Archivos modificados
-Sincronización obligatoria
-Docs, código y tests deben estar siempre alineados:
+SincronizaciÃ³n obligatoria
+Docs, cÃ³digo y tests deben estar siempre alineados:
 
-Si cambia el código → actualizás la spec
-Si cambia la spec → actualizás el código
-Si hay drift entre ambos → detenés y reportás al humano
-Cómo reportar al humano
+Si cambia el cÃ³digo â†’ actualizÃ¡s la spec
+Si cambia la spec â†’ actualizÃ¡s el cÃ³digo
+Si hay drift entre ambos â†’ detenÃ©s y reportÃ¡s al humano
+CÃ³mo reportar al humano
 Al iniciar una feature:
-Feature N — [Nombre]
-Leí requirements.md y feature-plan.md.
-Alcance entendido: [resumen en 2-3 líneas]
+Feature N â€” [Nombre]
+LeÃ­ requirements.md y feature-plan.md.
+Alcance entendido: [resumen en 2-3 lÃ­neas]
 Supuestos: [si hay / ninguno]
 Conflictos encontrados: [si hay / ninguno]
-¿Aprobás para continuar?
-Al terminar validación:
-Feature N — Validación
+Â¿AprobÃ¡s para continuar?
+Al terminar validaciÃ³n:
+Feature N â€” ValidaciÃ³n
 Checks AGENTE: X/Y pasaron
 Checks HUMANO pendientes: [lista]
-Fallas: [qué falló y propuesta de corrección]
+Fallas: [quÃ© fallÃ³ y propuesta de correcciÃ³n]
 Al cerrar la feature:
-Feature N — Cerrada ✅
+Feature N â€” Cerrada âœ…
 CHANGELOG actualizado.
 Listo para Replanning o Feature N+1.
 Primer prompt para arrancar
-Leé AGENTS.md y el README.md si existe.
-Arrancá con la Constitución.
+LeÃ© AGENTS.md y el README.md si existe.
+ArrancÃ¡ con la ConstituciÃ³n.
 Entrevistame con una pregunta a la vez.
+
+## Flujo GitHub + Vercel Preview Deploy
+
+Todo cambio de codigo sigue este flujo obligatorio:
+
+```
+branch local
+  → commits
+    → Push a GitHub
+      → Pull Request
+        → Vercel Preview Deploy (automatico)
+          → prueba online en URL de preview
+            → merge a main
+              → Vercel Production Deploy (automatico)
+```
+
+### Reglas para coding agents
+
+1. Jamas trabajar directamente en `main`. Siempre crear una branch.
+2. El nombre de la branch sigue el patron: `feature/[nombre-kebab]` o `fix/[nombre-kebab]`.
+3. Despues de validar la feature, hacer commit y push a GitHub.
+4. Abrir Pull Request contra `main`.
+5. Vercel genera automaticamente una URL de Preview para el PR.
+6. Los checks [HUMANO] se verifican en la URL de Preview.
+7. No mergear sin que los checks [HUMANO] pasen.
+8. Despues del merge, Vercel hace el deploy de produccion automaticamente.
+
+### Variables de entorno en Vercel
+
+Las variables de entorno del backend (SUPABASE_URL, SUPABASE_KEY, KAPSO_API_KEY, etc.) se configuran una sola vez en el dashboard de Vercel y aplican a todos los Preview y Production deploys.
+
+El coding agent no tiene acceso a estas variables ni las modifica. Solo trabaja con `.env.example` como referencia.

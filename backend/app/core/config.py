@@ -8,11 +8,11 @@ class Settings(BaseSettings):
     backend_host: str = "0.0.0.0"
     backend_port: int = 8000
     frontend_port: int = 5173
-    vite_api_base_url: str = "http://localhost:8000"
     otel_service_name: str = "ejer-spec-backend"
     otel_traces_exporter: str = "none"
     supabase_url: str
     supabase_key: str
+    cors_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
 
     model_config = SettingsConfigDict(
         env_file=(".env", "../.env"),
