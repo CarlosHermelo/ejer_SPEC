@@ -1,7 +1,7 @@
-import PersonasPage from "./pages/PersonasPage.jsx";
+﻿import HomePage from "./pages/HomePage.jsx";
 
 function App() {
-  return <PersonasPage />;
+  return <HomePage />;
 }
 
 export default App;
