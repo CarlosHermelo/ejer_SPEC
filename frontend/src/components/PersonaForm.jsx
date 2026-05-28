@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 
 const initialForm = {
   nombre: "",
@@ -13,11 +13,9 @@ function validateForm(values) {
   if (!values.nombre.trim()) {
     errors.nombre = "El nombre es obligatorio.";
   }
-
   if (!values.apellido.trim()) {
     errors.apellido = "El apellido es obligatorio.";
   }
-
   if (!values.fecha_alta) {
     errors.fecha_alta = "La fecha de alta es obligatoria.";
   } else if (values.fecha_alta > today) {
@@ -27,13 +25,19 @@ function validateForm(values) {
   return errors;
 }
 
-function PersonaForm({ onCreatePersona }) {
+function isFormComplete(values) {
+  return values.nombre.trim() && values.apellido.trim() && values.fecha_alta;
+}
+
+function PersonaForm({ onCreatePersona = async () => {} }) {
   const [values, setValues] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
+  const [saved, setSaved] = useState(false);
 
   const isLoading = status === "loading";
+  const isDisabled = isLoading || !isFormComplete(values);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -65,11 +69,20 @@ function PersonaForm({ onCreatePersona }) {
       setValues(initialForm);
       setErrors({});
       setStatus("success");
-      setMessage("Persona guardada correctamente.");
+      setMessage("¡Gracias! El cliente fue dado de alta correctamente.");
+      setSaved(true);
     } catch (error) {
       setStatus("error");
       setMessage(error.message);
     }
+  }
+
+  if (saved) {
+    return (
+      <p className="form-message form-message-success" role="status">
+        {message}
+      </p>
+    );
   }
 
   return (
@@ -120,12 +133,12 @@ function PersonaForm({ onCreatePersona }) {
         ) : null}
       </div>
 
-      <button className="primary-action" type="submit" disabled={isLoading}>
+      <button className="primary-action" type="submit" disabled={isDisabled}>
         {isLoading ? "Guardando" : "Guardar"}
       </button>
 
-      {message ? (
-        <p className={`form-message form-message-${status}`} role={status === "error" ? "alert" : "status"}>
+      {message && status === "error" ? (
+        <p className="form-message form-message-error" role="alert">
           {message}
         </p>
       ) : null}
