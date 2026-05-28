@@ -36,3 +36,6 @@ frontend/npm-cache*/
 # Docker/local runtime
 .docker/
 .claude/
+.vercel
+
+setup-vercel-env.ps1
