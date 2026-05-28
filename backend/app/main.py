@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+﻿from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.personas import router as personas_router
 from app.core.config import get_settings
@@ -7,6 +8,15 @@ from app.observability.setup import configure_observability
 settings = get_settings()
 
 app = FastAPI(title="Gestion de personas", version="0.1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 configure_observability(app)
 app.include_router(personas_router)
 

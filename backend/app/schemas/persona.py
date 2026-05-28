@@ -1,7 +1,7 @@
-from datetime import date
+﻿from datetime import date
 from typing import Annotated
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 RequiredText = Annotated[str, Field(min_length=1, max_length=120)]
 
@@ -28,9 +28,7 @@ class PersonaCreate(BaseModel):
 
 
 class PersonaRead(BaseModel):
-    id: int
+    id: str
     nombre: str
     apellido: str
     fecha_alta: date
-
-    model_config = ConfigDict(from_attributes=True)

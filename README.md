@@ -1,175 +1,173 @@
-# Gestion de personas
+﻿# Gestion de personas
 
-Aplicacion interna para cargar y consultar personas que trabajan con el usuario y su equipo.
+Aplicacion interna para cargar y consultar personas. Construida con React + FastAPI + Supabase.
 
-## Estado
+## Stack
 
-MVP implementado con Spec-Driven Development.
-
-## Alcance del MVP
-
-La aplicacion permite:
-
-- cargar personas con nombre, apellido y fecha de alta
-- consultar personas cargadas
-- persistir datos en SQLite
-- ejecutar backend y frontend con Docker Compose
-
-Fuera del MVP:
-
-- login de usuarios
-- permisos por rol
-- pagos
-- tareas
-- documentos
-- busqueda
-- filtros
-- paginacion
-- edicion
-- borrado
+| Capa | Tecnologia |
+|---|---|
+| Frontend | React 19 + Vite 7 |
+| Backend | FastAPI (Python) |
+| Base de datos | Supabase (PostgreSQL) |
+| Mensajeria | Kapso (WhatsApp via Meta API) |
+| Observabilidad | OpenTelemetry (base) |
+| Deploy | Vercel |
+| CI | GitHub Actions |
 
 ## Estructura
 
-```text
+```
+api/              Funcion serverless para Vercel (wrapper FastAPI)
 backend/
   app/
-    api/
-    models/
-    schemas/
-    services/
-    db/
-    observability/
+    api/          Endpoints HTTP
+    schemas/      Pydantic schemas
+    services/     Logica de negocio
+    db/           Cliente Supabase
+    observability/ OpenTelemetry
 frontend/
   src/
-    components/
-    pages/
-    api/
-    styles/
-specs/
+    api/          Cliente HTTP hacia FastAPI
+    components/   Componentes React
+    pages/        Pantallas
+    styles/       Estilos globales
+prueba/           Scripts Python standalone para experimentacion
+specs/            Documentacion SDD (mission, tech-stack, roadmap, features)
+vercel.json       Configuracion Vercel (raiz del repo)
 docker-compose.yml
 ```
 
-## Workflow
+## Supabase — tabla personas
 
-Cada feature se define primero en `specs/features/` con:
+Crear esta tabla en Supabase SQL Editor antes de usar el backend:
 
-- `requirements.md`
-- `feature-plan.md`
-- `validation.md`
-
-No se implementa codigo fuera de una spec aprobada.
-
-## Repositorio
-
-Remoto oficial:
-
-```bash
-git remote add origin https://github.com/CarlosHermelo/ejer_SPEC
+```sql
+CREATE TABLE personas (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    nombre TEXT NOT NULL,
+    apellido TEXT NOT NULL,
+    fecha_alta DATE NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
 ```
 
-El push y el Pull Request se hacen despues de validar la feature y cuando corresponda segun el workflow SDD.
+## Variables de entorno
 
-## Configuracion local
-
-Crear `.env` desde la plantilla versionada:
-
-```bash
-cp .env.example .env
-```
-
-En Windows PowerShell:
+Copiar `.env.example` a `.env` y completar los valores:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Variables principales:
+Variables requeridas:
 
-- `DATABASE_URL`
-- `BACKEND_PORT`
-- `FRONTEND_PORT`
-- `VITE_API_BASE_URL`
-- `OTEL_SERVICE_NAME`
-- `OTEL_TRACES_EXPORTER`
+| Variable | Descripcion |
+|---|---|
+| `SUPABASE_URL` | URL del proyecto Supabase (ej: `https://xxxx.supabase.co`) |
+| `SUPABASE_KEY` | Clave anon/publica de Supabase |
+| `KAPSO_API_KEY` | Clave de la API de Kapso |
+| `PHONE_NUMBER_ID` | ID del numero de telefono en Kapso |
+| `NUMERO_DESTINO` | Numero WhatsApp destino (formato internacional sin +) |
 
-## Entorno virtual backend
+Variables opcionales:
 
-Crear el entorno virtual:
+| Variable | Default | Descripcion |
+|---|---|---|
+| `APP_ENV` | `local` | Entorno de ejecucion |
+| `OTEL_SERVICE_NAME` | `ejer-spec-backend` | Nombre del servicio en OTel |
+| `OTEL_TRACES_EXPORTER` | `none` | Exportador de trazas |
+| `CORS_ORIGINS` | `http://localhost:5173` | Origenes permitidos (separados por coma) |
 
-```bash
-python -m venv .venv
-```
+## Ejecucion local
 
-Activar en Windows PowerShell:
+### Backend (FastAPI)
 
 ```powershell
+# Activar entorno virtual
 .\.venv\Scripts\Activate.ps1
+
+# Instalar dependencias (primera vez o cuando cambien)
+pip install -r backend\requirements.txt
+
+# Iniciar servidor
+uvicorn backend.app.main:app --reload
 ```
 
-Activar en Linux/macOS:
+Backend disponible en `http://localhost:8000`.
+Documentacion interactiva: `http://localhost:8000/docs`.
 
-```bash
-source .venv/bin/activate
-```
+### Frontend (React)
 
-Instalar dependencias backend:
-
-```bash
-python -m pip install -r backend/requirements.txt
-```
-
-Ejecutar backend local:
-
-```bash
-uvicorn app.main:app --app-dir backend --reload
-```
-
-## Frontend local
-
-Instalar dependencias:
-
-```bash
+```powershell
 cd frontend
-npm install
-```
-
-Ejecutar frontend:
-
-```bash
+npm install   # primera vez o cuando cambien dependencias
 npm run dev
 ```
 
-## Docker Compose
+Frontend disponible en `http://localhost:5173`.
 
-Levantar servicios:
+En desarrollo el frontend llama al backend en `http://localhost:8000` (configurado en `frontend/.env.development`).
 
-```bash
-docker compose up --build
+### Tests frontend
+
+```powershell
+cd frontend
+npm test
 ```
 
-Validar configuracion:
+### Script WhatsApp standalone
 
-```bash
-docker compose config
+```powershell
+.\.venv\Scripts\Activate.ps1
+python prueba\envio.py "Hola desde el script"
 ```
+
+## Deploy en Vercel
+
+### Arquitectura en Vercel
+
+- El frontend React se sirve como sitio estatico desde `frontend/dist`.
+- El backend FastAPI se ejecuta como funcion serverless bajo `/api/*`.
+- Las rutas `/api/*` van al backend; todo lo demas va al frontend (SPA routing).
+
+### Configuracion del proyecto en Vercel
+
+1. Conectar el repo de GitHub a Vercel.
+2. En la configuracion del proyecto, establecer **Root Directory** como `.` (raiz del repo, no `frontend/`).
+3. Agregar las siguientes variables de entorno en Vercel:
+   - `SUPABASE_URL`
+   - `SUPABASE_KEY`
+   - `KAPSO_API_KEY`
+   - `PHONE_NUMBER_ID`
+   - `NUMERO_DESTINO`
+
+El `vercel.json` en la raiz del repo configura automaticamente el build y las rutas.
+
+### Flujo PR con Vercel Preview
+
+```
+1. Crear branch desde main
+2. Hacer cambios y commits
+3. Abrir Pull Request en GitHub
+4. Vercel genera automaticamente una URL de Preview para ese PR
+5. Probar la funcionalidad en la URL de Preview
+6. Aprobar y mergear a main
+7. Vercel hace el deploy de produccion automaticamente
+```
+
+URL de produccion actual: `https://ejer-spec.vercel.app`
 
 ## API
-
-Backend local por defecto:
-
-```text
-http://localhost:8000
-```
 
 Endpoints disponibles:
 
 | Metodo | Ruta | Descripcion |
 |---|---|---|
-| GET | `/health` | Healthcheck del backend |
-| POST | `/personas` | Crea una persona |
-| GET | `/personas` | Lista personas cargadas |
+| `GET` | `/health` | Healthcheck del backend |
+| `POST` | `/personas` | Crea una persona |
+| `GET` | `/personas` | Lista personas cargadas |
 
-Payload de `POST /personas`:
+Ejemplo `POST /personas`:
 
 ```json
 {
@@ -179,28 +177,14 @@ Payload de `POST /personas`:
 }
 ```
 
-Reglas:
+En Vercel estas rutas quedan bajo `/api/personas` y `/api/health`.
+Localmente siguen siendo `http://localhost:8000/personas`.
 
-- `nombre` es obligatorio
-- `apellido` es obligatorio
-- `fecha_alta` es obligatoria
-- `fecha_alta` no puede ser futura
+## Workflow SDD
 
-## Observability
+Cada feature se define primero en `specs/features/` con:
+- `requirements.md`
+- `feature-plan.md`
+- `validation.md`
 
-El backend incluye instrumentacion base con OpenTelemetry para FastAPI.
-
-Variables:
-
-- `OTEL_SERVICE_NAME`
-- `OTEL_TRACES_EXPORTER`
-
-En el MVP `OTEL_TRACES_EXPORTER=none`. La exportacion a un collector externo queda fuera del MVP.
-
-## Validacion manual
-
-1. Levantar servicios con `docker compose up --build`.
-2. Abrir el frontend en `http://localhost:5173`.
-3. Cargar una persona con nombre, apellido y fecha de alta.
-4. Verificar que aparece en el listado.
-5. Probar campos vacios y fecha futura.
+Ver `AGENTS.md` para el flujo completo de trabajo con agentes.

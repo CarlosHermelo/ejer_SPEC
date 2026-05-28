@@ -1,18 +1,37 @@
+﻿import { useState, useEffect, useCallback } from "react";
+
+import { createPersona, listPersonas } from "../api/personas.js";
 import BuscadorPersonas from "../components/BuscadorPersonas.jsx";
 import ErrorState from "../components/ErrorState.jsx";
 import PersonaForm from "../components/PersonaForm.jsx";
 import PersonasList from "../components/PersonasList.jsx";
 
-const PERSONAS_EJEMPLO = [
-  { id: 1, nombre: "María", apellido: "Gómez", fecha_alta: "2024-01-10" },
-  { id: 2, nombre: "Marcos", apellido: "López", fecha_alta: "2024-02-15" },
-  { id: 3, nombre: "Juan", apellido: "Pérez", fecha_alta: "2024-03-20" },
-  { id: 4, nombre: "Mariana", apellido: "Fernández", fecha_alta: "2024-04-05" },
-  { id: 5, nombre: "Carlos", apellido: "Martínez", fecha_alta: "2024-05-18" },
-];
-
 function PersonasPage() {
-  const error = null;
+  const [personas, setPersonas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchPersonas = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await listPersonas();
+      setPersonas(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPersonas();
+  }, [fetchPersonas]);
+
+  async function handleCreatePersona(payload) {
+    await createPersona(payload);
+    await fetchPersonas();
+  }
 
   return (
     <main className="people-page">
@@ -21,37 +40,36 @@ function PersonasPage() {
           <p className="eyebrow">Gestion interna</p>
           <h1>Personas</h1>
         </div>
-        <span className="status-pill">Modelo UI</span>
       </header>
 
       <section className="workspace-grid" aria-label="Gestion de personas">
         <section className="tool-panel" aria-labelledby="form-title">
           <div className="section-heading">
             <h2 id="form-title">Carga</h2>
-            <p>Campos definidos para el MVP.</p>
+            <p>Alta de personas en el sistema.</p>
           </div>
-          <PersonaForm />
+          <PersonaForm onCreatePersona={handleCreatePersona} />
         </section>
 
         <section className="tool-panel" aria-labelledby="list-title">
           <div className="section-heading">
             <h2 id="list-title">Consulta</h2>
-            <p>Listado base preparado para datos persistidos.</p>
+            <p>Personas registradas en Supabase.</p>
           </div>
           {error ? (
             <ErrorState title="No se pudo cargar el listado" message={error} />
           ) : (
-            <PersonasList />
+            <PersonasList personas={personas} loading={loading} error={null} />
           )}
         </section>
       </section>
 
       <section className="tool-panel" style={{ marginTop: 20 }} aria-labelledby="busqueda-title">
         <div className="section-heading">
-          <h2 id="busqueda-title">Búsqueda de clientes</h2>
-          <p>Ingresá al menos 3 caracteres del nombre y presá Buscar.</p>
+          <h2 id="busqueda-title">Busqueda de clientes</h2>
+          <p>Ingresa al menos 3 caracteres del nombre y presa Buscar.</p>
         </div>
-        <BuscadorPersonas personas={PERSONAS_EJEMPLO} />
+        <BuscadorPersonas personas={personas} />
       </section>
     </main>
   );
