@@ -1,4 +1,4 @@
-﻿import os
+import os
 import sys
 
 # Make backend importable from the api/ directory
