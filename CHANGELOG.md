@@ -1,4 +1,10 @@
-## Feature 8 - Deploy Frontend en Vercel - Cerrada ✅
+﻿## Feature 9 - Pagina Principal con Menu de Navegacion - Cerrada âœ…
+- Fecha: 2026-05-28
+- Que se implemento: nueva pagina principal con topbar horizontal de 5 items (SUPA, WS, KGS, RAG, GRAL). SUPA despliega sub-items Carga y Consulta que contienen el contenido previo de PersonasPage. WS/KGS/RAG/GRAL muestran placeholder. App.jsx actualizado para renderizar HomePage. PersonasPage.jsx sin modificaciones.
+- Decisiones tomadas fuera de la spec: navegacion implementada con estado local en HomePage (sin React Router), segun lo especificado.
+- Resultado de validacion: checks AGENTE 4/4 pasaron. Checks HUMANO pendientes de revision manual en browser.
+- Archivos modificados: frontend/src/App.jsx, frontend/src/components/TopBar.jsx (nuevo), frontend/src/pages/HomePage.jsx (nuevo), frontend/src/styles/global.css, specs/features/feature-9-pagina-principal-menu/.
+## Feature 8 - Deploy Frontend en Vercel - Cerrada âœ…
 - Fecha: 2026-05-26
 - Que se implemento: conexion del frontend React + Vite a Vercel con deploy automatico desde rama `main`. Configuracion de `vercel.json` con framework Vite, build command, output directory y SPA routing. Especificacion de Node.js >= 22 en `package.json`. Resolucion de conflictos de merge en `PersonaForm.jsx` que bloqueaban el build.
 - Decisiones tomadas fuera de la spec: se eligio Vercel plan Hobby por ser gratuito y soportar Vite nativamente. El preset fue configurado manualmente a Vite (Vercel lo detecto incorrectamente como Create React App).
@@ -47,3 +53,4 @@
 - Decisiones tomadas fuera de la spec: ninguna.
 - Resultado de validacion: checks AGENTE 4/4 pasaron; check HUMANO pendiente.
 - Archivos modificados: `backend/`, `frontend/`, `README.md`, `.gitignore`, `docker-compose.yml`, `specs/features/feature-1-estructura/validation.md`.
+
