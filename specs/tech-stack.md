@@ -1,4 +1,4 @@
-﻿# Tech Stack
+# Tech Stack
 
 ## Frontend
 
@@ -24,47 +24,39 @@
 
 - OpenTelemetry
 
-## Deploy y hosting
+## Deploy - Vercel
 
-### Frontend — Vercel
+- **Vercel** como plataforma de deploy full-stack (frontend + backend en un solo proyecto).
+- El frontend (React + Vite) se buildea con `cd frontend && npm install && npm run build`. El output es `frontend/dist`.
+- El backend (FastAPI) corre como funcion serverless Python en `api/index.py`.
+- `api/index.py` es un wrapper Starlette que monta la app FastAPI bajo el prefijo `/api`, para que Vercel enrute `/api/*` al runtime Python y FastAPI vea internamente `/personas`, `/health`, etc.
+- `vercel.json` en la raiz del repo define el build, el output directory y los rewrites.
+- Las variables de entorno del backend viven en el **dashboard de Vercel**, no en el repo.
+- El archivo `api/requirements.txt` declara las dependencias Python para el runtime de Vercel. Debe estar en UTF-8 sin BOM.
+- URL de produccion: `https://ejer-spec.vercel.app`
 
-- **Plataforma:** Vercel (plan Hobby)
-- **URL de produccion:** `https://ejer-spec.vercel.app`
-- **Proyecto Vercel:** `ejer-spec` (cuenta `carloshermelo-gmailcoms-projects`)
-- **Repo conectado:** `CarlosHermelo/ejer_SPEC` rama `main`
-- **Root Directory configurado en Vercel:** `frontend/`
-- **Framework:** Vite (configurado manualmente, no Create React App)
-- **Build Command:** `npm run build`
-- **Output Directory:** `dist`
-- **Node.js:** >= 22 (requerido por Vite 7, especificado en `engines` de `package.json`)
-- **Deploy automatico:** cada push a `main` dispara un nuevo deploy en Vercel
-- **SPA Routing:** configurado via `frontend/vercel.json` con rewrites a `index.html`
-- **Variable de entorno requerida en Vercel:**
-  - `VITE_API_BASE_URL`: URL del backend FastAPI desplegado
+### Routing en Vercel
 
-### Archivo frontend/vercel.json
-
-```json
-{
-  "framework": "vite",
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}
+```
+/api/*  ->  api/index.py  (FastAPI serverless)
+/*      ->  frontend/dist/index.html  (React SPA)
 ```
 
-### Backend — pendiente de deploy
+### Variables de entorno por entorno
 
-El backend FastAPI todavia no tiene plataforma de hosting definida. Opciones evaluadas: Railway, Render. La URL resultante debe configurarse como `VITE_API_BASE_URL` en Vercel.
+| Variable | Local (.env) | Vercel (dashboard) |
+|----------|--------------|--------------------|
+| `SUPABASE_URL` | si | si (Production + Preview) |
+| `SUPABASE_KEY` | si | si (Production + Preview) |
+| `KAPSO_API_KEY` | si | si |
+| `PHONE_NUMBER_ID` | si | si |
+| `NUMERO_DESTINO` | si | si |
 
-## Entorno y ejecucion local
+## Entorno local
 
-- Docker Desktop 4.69.x
-- Docker Engine 29.3.x
-- Docker Compose
 - GitHub para versionado del proyecto
+- Python venv para el backend local (`backend/.venv`)
+- Node.js 24.x para el frontend local
 
 ## Workflow de desarrollo
 
@@ -73,7 +65,20 @@ El backend FastAPI todavia no tiene plataforma de hosting definida. Opciones eva
 - Cada feature debe tener validacion definida con checks [AGENTE] y [HUMANO].
 - Los checks [AGENTE] los ejecuta el agente de forma autonoma.
 - Los checks [HUMANO] quedan reportados para revision manual.
-- Despues de validar una feature se debe hacer commit, push a GitHub, abrir PR y mergear a la rama principal cuando este aprobada.
+- Siempre trabajar en rama feature/xxx. Nunca pushear directo a main.
+- Cada PR abre automaticamente un Preview Deploy en Vercel con URL unica.
+- Verificar que el Preview Deploy funciona antes de mergear a main.
+- El merge a main dispara el deploy de produccion en Vercel.
+
+### Flujo completo
+
+```
+git checkout -b feature/nombre
+# cambios
+git push -> PR en GitHub -> Preview Deploy (URL unica en Vercel)
+# verificar preview
+merge PR -> Deploy a produccion (ejer-spec.vercel.app)
+```
 
 ## Politica de versiones
 
@@ -82,30 +87,39 @@ El backend FastAPI todavia no tiene plataforma de hosting definida. Opciones eva
 - Fijar major/minor en configuracion para evitar actualizaciones accidentales.
 - Permitir patches compatibles dentro de la misma rama estable.
 
-## Arquitectura inicial
+## Arquitectura
 
-La aplicacion se organiza como monorepo con frontend React + Vite y backend FastAPI. La persistencia es 100% Supabase (PostgreSQL en la nube).
+La aplicacion se organiza como monorepo con frontend React + Vite y backend FastAPI. La persistencia es 100% Supabase (PostgreSQL en la nube). El deploy es full-stack en Vercel.
 
 Estructura base:
 
 ```
+api/
+  index.py          - wrapper Starlette para Vercel (monta FastAPI bajo /api)
+  requirements.txt  - dependencias Python para el runtime serverless de Vercel
 backend/
   app/
-    main.py
-    api/
-    schemas/
-    services/
-    db/
-    observability/
+    main.py         - FastAPI app + CORS middleware
+    api/            - endpoints HTTP
+    schemas/        - schemas Pydantic
+    services/       - reglas de negocio
+    db/             - cliente Supabase singleton
+    core/           - config (pydantic-settings, lee .env)
+    observability/  - OpenTelemetry
+  requirements.txt
 frontend/
   src/
     components/
     pages/
-    api/
+    api/            - cliente HTTP hacia FastAPI
     styles/
-prueba/
+  .env.development  - VITE_API_BASE_URL=http://localhost:8000
+  .env.production   - VITE_API_BASE_URL=/api
+prueba/             - scripts Python standalone, no forman parte del deploy
 specs/
-docker-compose.yml
+vercel.json         - config de deploy full-stack (build + routing)
+.env                - credenciales locales (NO commiteado)
+.env.example        - plantilla sin valores reales (commiteado)
 README.md
 ```
 
@@ -126,15 +140,31 @@ El frontend separa:
 
 La carpeta `prueba/` contiene scripts Python standalone para experimentacion e integracion con Supabase. No forma parte del backend ni del frontend productivo.
 
+## CORS
+
+El backend habilita CORS para el frontend local. La lista de origenes permitidos se configura en `Settings.cors_origins` (default: `["http://localhost:5173", "http://localhost:3000"]`). En produccion no es necesario porque frontend y backend comparten el mismo dominio Vercel.
+
+## Variables de entorno del frontend
+
+El frontend usa archivos `.env` de Vite para apuntar al backend segun el entorno:
+
+| Archivo | Variable | Valor |
+|---------|----------|-------|
+| `.env.development` | `VITE_API_BASE_URL` | `http://localhost:8000` |
+| `.env.production` | `VITE_API_BASE_URL` | `/api` |
+
+En produccion el valor `/api` es relativo, por lo que funciona en cualquier URL de Vercel (produccion y preview) sin configuracion adicional.
+
 ## Restricciones
 
 - No implementar funcionalidades fuera de la spec aprobada.
 - No agregar login, permisos, pagos, tareas ni documentos durante el MVP.
-- La configuracion debe quedar preparada para ejecutarse con Docker.
 - El proyecto debe versionarse en GitHub.
 - No usar Next.js en el MVP; React + Vite es suficiente.
 - No hacer push, PR ni merge sin validacion previa.
 - **No usar SQLite, SQLAlchemy ni Alembic.** Toda persistencia va a Supabase.
+- **No subir credenciales al repositorio.** `.env` debe estar excluido por `.gitignore`.
+- **Las variables de entorno del backend viven en el dashboard de Vercel**, no en el repo.
 
 ## Dependencias Python para Supabase
 
@@ -182,23 +212,6 @@ El archivo `.gitignore` debe incluir la siguiente linea para evitar subir secret
 
 ```
 .env
-```
-
-### Validacion desde Python
-
-Todo script Python que use Supabase debe:
-
-1. Cargar variables con `python-dotenv`.
-2. Leer `SUPABASE_URL` desde variables de entorno.
-3. Leer `SUPABASE_KEY` desde variables de entorno.
-4. Validar que ambas variables existan antes de conectarse.
-5. Mostrar errores claros si falta alguna variable.
-
-Errores esperados si falta configuracion:
-
-```
-Error: falta SUPABASE_URL en el archivo .env
-Error: falta SUPABASE_KEY en el archivo .env
 ```
 
 ### Patron de inicializacion del cliente Supabase en Python
@@ -269,13 +282,6 @@ CREATE TABLE registros (
 | `descripcion` | TEXT | Texto obligatorio del registro |
 | `creado_en` | TIMESTAMPTZ | Fecha y hora automatica de creacion |
 
-Uso esperado:
-
-- Insertar registros de prueba desde Python.
-- Consultar registros insertados.
-- Validar la conexion entre Python y Supabase.
-- Primera prueba funcional de integracion con base de datos.
-
 ### Tabla personas (Feature 3)
 
 ```sql
@@ -334,5 +340,5 @@ En produccion se deberan usar reglas mas restrictivas. Se debera evaluar el uso 
   - `PHONE_NUMBER_ID`: ID del numero de telefono registrado en Kapso/Meta
   - `NUMERO_DESTINO`: numero de WhatsApp destino verificado en sandbox (formato internacional sin +)
 - Los valores de estas variables NO se versionan en el repo; se almacenan en `.env` local. El `.env.example` documenta las claves sin valores.
-- Endpoint de envio Kapso: `https://api.kapso.ai/meta/whatsapp/v24.0/{PHONE_NUMBER_ID}/messages`
-- Autenticacion Kapso: header `X-API-Key: {KAPSO_API_KEY}`.
+- Endpoint de envio Kapso: https://api.kapso.ai/meta/whatsapp/v24.0/{PHONE_NUMBER_ID}/messages
+- Autenticacion Kapso: header X-API-Key: {KAPSO_API_KEY}.
