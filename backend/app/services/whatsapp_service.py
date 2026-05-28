@@ -13,6 +13,7 @@ def send_message(text: str) -> dict:
     }
     payload = {
         "messaging_product": "whatsapp",
+        "recipient_type": "individual",
         "to": settings.numero_destino,
         "type": "text",
         "text": {"body": text},
