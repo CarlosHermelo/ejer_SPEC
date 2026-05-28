@@ -1,4 +1,5 @@
-﻿from supabase import Client
+﻿from fastapi import HTTPException, status
+from supabase import Client
 
 from app.schemas.persona import PersonaCreate, PersonaRead
 
@@ -10,6 +11,11 @@ def create_persona(db: Client, persona_in: PersonaCreate) -> PersonaRead:
         "fecha_alta": persona_in.fecha_alta.isoformat(),
     }
     result = db.table("personas").insert(data).execute()
+    if not result.data:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Supabase no devolvio datos tras el insert. Verificar RLS policies.",
+        )
     return PersonaRead(**result.data[0])
 
 

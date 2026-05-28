@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+﻿const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function getApiBaseUrl() {
   if (!API_BASE_URL) {
@@ -29,7 +29,7 @@ export async function createPersona(payload) {
           .join(" ");
       }
     } catch {
-      detail = "No se pudo interpretar la respuesta del servidor.";
+      detail = `Error ${response.status} del servidor. Revisa los logs de Vercel.`;
     }
     throw new Error(detail || "No se pudo guardar la persona.");
   }
