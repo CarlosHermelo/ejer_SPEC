@@ -2,6 +2,7 @@
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.personas import router as personas_router
+from app.api.whatsapp import router as whatsapp_router
 from app.core.config import get_settings
 from app.observability.setup import configure_observability
 
@@ -19,6 +20,7 @@ app.add_middleware(
 
 configure_observability(app)
 app.include_router(personas_router)
+app.include_router(whatsapp_router)
 
 
 @app.get("/health", tags=["system"])

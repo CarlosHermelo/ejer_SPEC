@@ -1,5 +1,6 @@
 ﻿import { useState, useEffect, useCallback } from "react";
 import TopBar from "../components/TopBar.jsx";
+import EnvioWhatsapp from "./EnvioWhatsapp.jsx";
 import { createPersona, listPersonas } from "../api/personas.js";
 import BuscadorPersonas from "../components/BuscadorPersonas.jsx";
 import ErrorState from "../components/ErrorState.jsx";
@@ -97,6 +98,10 @@ export default function HomePage() {
     if (activeItem === "SUPA") {
       if (activeSub === "Carga") return <SupaCarga onCreatePersona={handleCreatePersona} />;
       if (activeSub === "Consulta") return <SupaConsulta personas={personas} loading={loading} error={error} />;
+      return null;
+    }
+    if (activeItem === "WS") {
+      if (activeSub === "Msj1") return <EnvioWhatsapp />;
       return null;
     }
     return <PlaceholderSection nombre={activeItem} />;

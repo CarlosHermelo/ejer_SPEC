@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     supabase_url: str
     supabase_key: str
     cors_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    kapso_api_key: str = ""
+    phone_number_id: str = ""
+    numero_destino: str = ""
 
     model_config = SettingsConfigDict(
         env_file=(".env", "../.env"),

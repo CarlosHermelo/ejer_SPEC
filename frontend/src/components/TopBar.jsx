@@ -1,7 +1,10 @@
 ﻿const ITEMS = ["SUPA", "WS", "KGS", "RAG", "GRAL"];
 const SUPA_SUBS = ["Carga", "Consulta"];
+const WS_SUBS = ["Msj1"];
 
 export default function TopBar({ activeItem, activeSub, onItemClick, onSubClick }) {
+  const subs = activeItem === "SUPA" ? SUPA_SUBS : activeItem === "WS" ? WS_SUBS : null;
+
   return (
     <nav className="topbar">
       <ul className="topbar-items">
@@ -16,9 +19,9 @@ export default function TopBar({ activeItem, activeSub, onItemClick, onSubClick 
           </li>
         ))}
       </ul>
-      {activeItem === "SUPA" && (
+      {subs && (
         <ul className="topbar-subs">
-          {SUPA_SUBS.map((sub) => (
+          {subs.map((sub) => (
             <li key={sub}>
               <button
                 className={`topbar-sub-btn${activeSub === sub ? " topbar-sub-btn--active" : ""}`}
