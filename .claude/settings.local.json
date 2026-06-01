@@ -5,6 +5,7 @@
       "Bash(cp:*)",
       "Bash(mv:*)",
       "Bash(rm:*)",
+      "Bash(vercel env*)",
       "Bash(git -C \"c:/Users/u14527001/Downloads/analista/eje3_codex\" status)",
       "Bash(git -C \"c:/Users/u14527001/Downloads/analista/eje3_codex\" log --oneline -10)",
       "Bash(git -C \"c:/Users/u14527001/Downloads/analista/eje3_codex\" remote -v)",

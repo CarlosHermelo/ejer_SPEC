@@ -42,4 +42,4 @@ branch local
 
 Las variables de entorno del backend (SUPABASE_URL, SUPABASE_KEY, KAPSO_API_KEY, etc.) se configuran una sola vez en el dashboard de Vercel y aplican a todos los Preview y Production deploys.
 
-El coding agent no tiene acceso a estas variables ni las modifica. Solo trabaja con `.env.example` como referencia.
+El coding agent **tiene permiso para leer, agregar, modificar y eliminar variables de entorno en Vercel** usando la CLI (`vercel env`), tanto en Production como en Preview. Los valores correctos se obtienen del `.env` local del proyecto.
