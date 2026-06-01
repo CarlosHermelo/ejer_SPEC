@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect, useCallback } from "react";
 
-import { createPersona, listPersonas } from "../api/personas.js";
+import { createPersona, deletePersona, listPersonas } from "../api/personas.js";
 import BuscadorPersonas from "../components/BuscadorPersonas.jsx";
 import ErrorState from "../components/ErrorState.jsx";
 import PersonaForm from "../components/PersonaForm.jsx";
@@ -33,6 +33,11 @@ function PersonasPage() {
     await fetchPersonas();
   }
 
+  async function handleDeletePersona(id) {
+    await deletePersona(id);
+    await fetchPersonas();
+  }
+
   return (
     <main className="people-page">
       <header className="page-header">
@@ -59,7 +64,7 @@ function PersonasPage() {
           {error ? (
             <ErrorState title="No se pudo cargar el listado" message={error} />
           ) : (
-            <PersonasList personas={personas} loading={loading} error={null} />
+            <PersonasList personas={personas} loading={loading} error={null} onDelete={handleDeletePersona} />
           )}
         </section>
       </section>

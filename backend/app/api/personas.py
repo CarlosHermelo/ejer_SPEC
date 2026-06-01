@@ -3,7 +3,7 @@ from supabase import Client
 
 from app.db.client import get_supabase
 from app.schemas.persona import PersonaCreate, PersonaRead
-from app.services.personas import create_persona, list_personas
+from app.services.personas import create_persona, delete_persona, list_personas
 
 router = APIRouter(prefix="/personas", tags=["personas"])
 
@@ -16,3 +16,8 @@ def post_persona(persona_in: PersonaCreate, db: Client = Depends(get_supabase)) 
 @router.get("", response_model=list[PersonaRead])
 def get_personas(db: Client = Depends(get_supabase)) -> list[PersonaRead]:
     return list_personas(db)
+
+
+@router.delete("/{persona_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_persona_endpoint(persona_id: str, db: Client = Depends(get_supabase)) -> None:
+    delete_persona(db, persona_id)
