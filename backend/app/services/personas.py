@@ -1,16 +1,17 @@
-﻿from fastapi import HTTPException, status
+from fastapi import HTTPException, status
 from supabase import Client
 
 from app.schemas.persona import PersonaCreate, PersonaRead
 
 
 def delete_persona(db: Client, persona_id: str) -> None:
-    result = db.table("personas").delete().eq("id", persona_id).execute()
-    if result.data is not None and len(result.data) == 0:
+    check = db.table("personas").select("id").eq("id", persona_id).execute()
+    if not check.data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Persona no encontrada.",
         )
+    db.table("personas").delete().eq("id", persona_id).execute()
 
 
 def create_persona(db: Client, persona_in: PersonaCreate) -> PersonaRead:
