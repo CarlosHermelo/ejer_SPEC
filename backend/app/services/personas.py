@@ -4,6 +4,15 @@ from supabase import Client
 from app.schemas.persona import PersonaCreate, PersonaRead
 
 
+def delete_persona(db: Client, persona_id: str) -> None:
+    result = db.table("personas").delete().eq("id", persona_id).execute()
+    if result.data is not None and len(result.data) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Persona no encontrada.",
+        )
+
+
 def create_persona(db: Client, persona_in: PersonaCreate) -> PersonaRead:
     data = {
         "nombre": persona_in.nombre,

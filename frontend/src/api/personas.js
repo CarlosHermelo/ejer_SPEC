@@ -46,3 +46,22 @@ export async function listPersonas() {
 
   return response.json();
 }
+
+export async function deletePersona(id) {
+  const response = await fetch(`${getApiBaseUrl()}/personas/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    let detail = "No se pudo eliminar la persona.";
+    try {
+      const data = await response.json();
+      if (typeof data.detail === "string") {
+        detail = data.detail;
+      }
+    } catch {
+      detail = `Error ${response.status} del servidor.`;
+    }
+    throw new Error(detail);
+  }
+}
