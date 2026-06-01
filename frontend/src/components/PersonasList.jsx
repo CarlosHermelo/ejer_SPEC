@@ -59,7 +59,7 @@ function PersonasList({ personas = [], loading = false, error = null, onDelete }
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Fecha de alta</th>
-            <th>Acciones</th>
+            {typeof onDelete === "function" && <th>Acciones</th>}
           </tr>
         </thead>
         <tbody>
@@ -68,17 +68,19 @@ function PersonasList({ personas = [], loading = false, error = null, onDelete }
               <td>{persona.nombre}</td>
               <td>{persona.apellido}</td>
               <td>{persona.fecha_alta}</td>
-              <td>
-                <button
-                  type="button"
-                  disabled={deletingId === persona.id}
-                  onClick={() => handleDelete(persona.id)}
-                  aria-label={`Eliminar a ${persona.nombre} ${persona.apellido}`}
-                  className="btn-delete"
-                >
-                  {deletingId === persona.id ? "Eliminando..." : "Eliminar"}
-                </button>
-              </td>
+              {typeof onDelete === "function" && (
+                <td>
+                  <button
+                    type="button"
+                    disabled={deletingId === persona.id}
+                    onClick={() => handleDelete(persona.id)}
+                    aria-label={`Eliminar a ${persona.nombre} ${persona.apellido}`}
+                    className="btn-delete"
+                  >
+                    {deletingId === persona.id ? "Eliminando..." : "Eliminar"}
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
