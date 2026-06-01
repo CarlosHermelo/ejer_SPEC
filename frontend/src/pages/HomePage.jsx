@@ -1,7 +1,7 @@
-﻿import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import TopBar from "../components/TopBar.jsx";
 import EnvioWhatsapp from "./EnvioWhatsapp.jsx";
-import { createPersona, listPersonas } from "../api/personas.js";
+import { createPersona, deletePersona, listPersonas } from "../api/personas.js";
 import BuscadorPersonas from "../components/BuscadorPersonas.jsx";
 import ErrorState from "../components/ErrorState.jsx";
 import PersonaForm from "../components/PersonaForm.jsx";
@@ -27,7 +27,7 @@ function SupaCarga({ onCreatePersona }) {
   );
 }
 
-function SupaConsulta({ personas, loading, error }) {
+function SupaConsulta({ personas, loading, error, onDelete }) {
   return (
     <>
       <div className="tool-panel" style={{ marginTop: 24 }}>
@@ -38,7 +38,7 @@ function SupaConsulta({ personas, loading, error }) {
         {error ? (
           <ErrorState title="No se pudo cargar el listado" message={error} />
         ) : (
-          <PersonasList personas={personas} loading={loading} error={null} />
+          <PersonasList personas={personas} loading={loading} error={null} onDelete={onDelete} />
         )}
       </div>
       <div className="tool-panel" style={{ marginTop: 20 }}>
@@ -93,11 +93,16 @@ export default function HomePage() {
     await fetchPersonas();
   }
 
+  async function handleDeletePersona(id) {
+    await deletePersona(id);
+    await fetchPersonas();
+  }
+
   function renderContent() {
     if (!activeItem) return null;
     if (activeItem === "SUPA") {
       if (activeSub === "Carga") return <SupaCarga onCreatePersona={handleCreatePersona} />;
-      if (activeSub === "Consulta") return <SupaConsulta personas={personas} loading={loading} error={error} />;
+      if (activeSub === "Consulta") return <SupaConsulta personas={personas} loading={loading} error={error} onDelete={handleDeletePersona} />;
       return null;
     }
     if (activeItem === "WS") {
