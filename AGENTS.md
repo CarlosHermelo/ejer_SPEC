@@ -271,4 +271,29 @@ branch local
 
 Las variables de entorno del backend (SUPABASE_URL, SUPABASE_KEY, KAPSO_API_KEY, etc.) se configuran una sola vez en el dashboard de Vercel y aplican a todos los Preview y Production deploys.
 
-El coding agent no tiene acceso a estas variables ni las modifica. Solo trabaja con `.env.example` como referencia.
+El coding agent no tiene acceso a estas variables ni las modifica. Solo trabaja con `.env.example` como referencia.# AGENTS.md
+
+## Kapso
+
+Este proyecto puede usar Kapso para integrar y probar funcionalidades de WhatsApp.
+
+Kapso está disponible mediante:
+
+- Kapso CLI
+- Kapso Agent Skills
+- Documentación para LLMs
+- API de Kapso
+- MCP, si está configurado
+
+## Kapso CLI
+
+El agente puede usar Kapso CLI desde la terminal para consultar, probar y administrar Kapso.
+
+Comandos útiles:
+
+```bash
+kapso --help
+kapso whatsapp --help
+kapso whatsapp numbers list
+kapso whatsapp templates list
+

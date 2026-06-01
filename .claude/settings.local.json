@@ -19,7 +19,12 @@
       "PowerShell(gh --version 2>&1)",
       "Bash(git -C \"c:/Users/u14527001/Downloads/analista/eje3_codex\" diff main...feature/mvp-features-4-5-6 --stat)",
       "Bash(mkdir -p \"c:/Users/u14527001/Downloads/analista/eje3_codex/.github/workflows\")",
-      "Bash(mkdir -p \"c:/Users/u14527001/Downloads/analista/eje3_codex/backend/tests\")"
+      "Bash(mkdir -p \"c:/Users/u14527001/Downloads/analista/eje3_codex/backend/tests\")",
+      "PowerShell(vercel login)",
+      "PowerShell($bytes = [System.IO.File]::ReadAllBytes\\(\"vercel.json\"\\); Write-Host \"First bytes: $\\($bytes[0..3] -join ', '\\)\"; Write-Host \"Length: $\\($bytes.Length\\)\")",
+      "PowerShell($content = Get-Content \"vercel.json\" -Raw -Encoding UTF8; [System.IO.File]::WriteAllText\\(\"vercel.json\", $content, [System.Text.UTF8Encoding]::new\\($false\\)\\); Write-Host \"Done — no BOM\")",
+      "WebSearch",
+      "WebFetch(domain:docs.kapso.ai)"
     ]
   }
 }
